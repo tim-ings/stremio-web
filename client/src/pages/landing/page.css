@@ -1,0 +1,14 @@
+.search-container {
+  max-width: 40rem;
+  display: flex;
+  flex-direction: column;
+  outline: 1px solid red;
+  margin: 1rem auto;
+}
+
+.search-container
+ul.search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
