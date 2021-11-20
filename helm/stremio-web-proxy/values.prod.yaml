@@ -1,0 +1,23 @@
+client:
+  image: ghcr.io/tim-ings/stremio-web-proxy-client
+  host: stremio-web-proxy.tim-ings.com
+  port: 3000
+  replicas: 1
+  tls: true
+  ingressAnnotations:
+    external-dns.alpha.kubernetes.io/hostname: stremio-web-proxy.tim-ings.com
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/auth-url: http://oauth2-proxy.ingress.svc.cluster.local/oauth2/auth
+    nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
+
+server:
+  image: ghcr.io/tim-ings/stremio-web-proxy-server
+  host: stremio-web-proxy.tim-ings.com
+  port: 3000
+  replicas: 1
+  tls: true
+  ingressAnnotations:
+    external-dns.alpha.kubernetes.io/hostname: stremio-web-proxy.tim-ings.com
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/auth-url: http://oauth2-proxy.ingress.svc.cluster.local/oauth2/auth
+    nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri

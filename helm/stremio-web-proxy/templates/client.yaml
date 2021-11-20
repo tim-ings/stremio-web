@@ -1,0 +1,61 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Chart.Name }}-client-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.com/health-checks: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    {{ if .Values.client.ingressAnnotations }}
+      {{ toYaml .Values.client.ingressAnnotations }}
+    {{ end }}
+spec:
+  {{ if .Values.client.tls }}
+  tls:
+  - hosts:
+    - {{ $.Values.client.host }}
+    secretName: {{ .Chart.Name }}-client-ingress-tls
+  {{ end }}
+  rules:
+  - host: {{ .Values.client.host }}
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          servicePort: {{ .Values.client.port }}
+          serviceName: {{ .Chart.Name }}-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-client
+  labels:
+    svc: {{ .Chart.Name }}-client
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.client.port }}
+      targetPort: {{ .Values.client.port }}
+  selector:
+    app: {{ .Chart.Name }}-client
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-client
+spec:
+  replicas: {{ .Values.client.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-client
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-client
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-client
+          image: "{{ $.Values.client.image }}:{{ $.Chart.Version }}"
+          ports:
+            - containerPort: {{ .Values.client.port }}

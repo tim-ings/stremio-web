@@ -1,0 +1,13 @@
+client:
+  image: stremio-web-proxy-client
+  host: stremio-web-proxy.local
+  port: 3000
+  replicas: 1
+  tls: true
+
+server:
+  image: stremio-web-proxy-server
+  host: stremio-web-proxy.local
+  port: 3000
+  replicas: 1
+  tls: true

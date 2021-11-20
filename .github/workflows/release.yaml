@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release-server:
+    name: Release Server
+    timeout-minutes: 10
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.CR_USER }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Parse tagged version
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF:11}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./server
+          file: ./server/Dockerfile
+          push: true
+          tags: ghcr.io/tim-ings/stremio-web-proxy-server:${{ steps.vars.outputs.tag }}
+
+  release-client:
+    name: Release Client
+    timeout-minutes: 10
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.CR_USER }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Parse tagged version
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF:11}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./client
+          file: ./client/Dockerfile
+          push: true
+          tags: ghcr.io/tim-ings/stremio-web-proxy-client:${{ steps.vars.outputs.tag }}
