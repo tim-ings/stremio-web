@@ -1,0 +1,18 @@
+# Ignore everything
+*
+
+# Allow files and directories
+!/src/**
+!/public/**
+!/package.json
+!/yarn.lock
+!/tsconfig.json
+!/.eslintrc
+!/server.js
+
+# Ignore unnecessary files inside allowed directories
+# This should go after the allowed directories
+**/*~
+**/*.log
+**/.DS_Store
+**/Thumbs.db
