@@ -7,9 +7,9 @@ metadata:
     nginx.com/health-checks: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
-    {{ if .Values.server.ingressAnnotations }}
-    {{ toYaml .Values.server.ingressAnnotations }}
-    {{ end }}
+{{- if .Values.server.ingressAnnotations }}
+{{ .Values.server.ingressAnnotations | toYaml | indent 4 }}
+{{- end }}
 spec:
   {{ if .Values.server.tls }}
   tls:
