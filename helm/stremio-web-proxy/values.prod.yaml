@@ -7,7 +7,7 @@ client:
   ingressAnnotations:
     external-dns.alpha.kubernetes.io/hostname: stremio-web-proxy.tim-ings.com
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/auth-url: http://oauth2-proxy.ingress.svc.cluster.local/oauth2/auth
+    nginx.ingress.kubernetes.io/auth-url: http://oauth2-proxy.stremio-web-proxy.svc.cluster.local/oauth2/auth
     nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
 
 server:
@@ -19,7 +19,7 @@ server:
   ingressAnnotations:
     external-dns.alpha.kubernetes.io/hostname: stremio-web-proxy.tim-ings.com
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/auth-url: http://oauth2-proxy.ingress.svc.cluster.local/oauth2/auth
+    nginx.ingress.kubernetes.io/auth-url: http://oauth2-proxy.stremio-web-proxy.svc.cluster.local/oauth2/auth
     nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
 
 secrets:
@@ -28,3 +28,33 @@ secrets:
   properties:
   - name: config
     key: config
+- name: oauth2-proxy
+  ref: /prod/infra/oauth2-proxy
+  properties:
+  - name: client-id
+    key: clientId
+  - name: client-secret
+    key: clientSecret
+  - name: cookie-secret
+    key: cookieSecret
+
+oauth2-proxy:
+  config:
+    existingSecret: oauth2-proxy
+  
+  extraArgs:
+    redirect-url: "https://stremio-web-proxy.tim-ings.com/oauth2/callback"
+
+  ingress:
+    enabled: true
+    path: /oauth2
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/hostname: stremio-web-proxy.tim-ings.com
+    hosts:
+      - stremio-web-proxy.tim-ings.com
+    tls:
+      - hosts:
+        - stremio-web-proxy.tim-ings.com
+        secretName: stremio-web-proxy-client-ingress-tls
