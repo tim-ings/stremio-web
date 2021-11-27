@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-export const useCreateStream = () => {
+export const useCreateProxyStream = () => {
   return useCallback(async (magnet: string) => {
     const streamId = await createStream(magnet);
     return streamId;

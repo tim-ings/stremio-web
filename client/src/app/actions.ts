@@ -1,13 +1,20 @@
-import { SearchResult } from './search/types';
+import { StremioMeta, StremioStream } from './stremio/types';
 
 export enum ActionType {
-  SearchResultsLoaded = `SearchResultsLoaded`
+  SearchResultsLoaded = `SearchResultsLoaded`,
+  StreamsLoaded = `StreamsLoaded`,
 }
 
 export interface SearchResultsLoadedAction {
-  type: ActionType
-  results: SearchResult[]
+  type: ActionType.SearchResultsLoaded
+  results: StremioMeta[]
+}
+
+export interface StreamsLoadedAction {
+  type: ActionType.StreamsLoaded
+  streams: StremioStream[]
 }
 
 export type Action
-  = SearchResultsLoadedAction;
+  = SearchResultsLoadedAction
+  | StreamsLoadedAction;

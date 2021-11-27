@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSearch } from '../../../app/search/use-search';
+import { useSearch } from '../../../app/stremio/use-search';
 import './search-input.css';
 
 export const SearchInput: React.FC = () => {

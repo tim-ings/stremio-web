@@ -33,20 +33,20 @@
     "@testing-library/user-event": "12.1.10",
     "@types/jest": "26.0.15",
     "@types/node": "12.0.0",
+    "@types/parse-torrent": "5.8.4",
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
-    "@types/react-helmet": "^6.1.4",
+    "@types/react-helmet": "6.1.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-scripts": "4.0.3",
     "typescript": "4.1.2",
-    "web-vitals": "1.0.1"
-  },
-  "dependencies": {
-    "react-helmet": "^6.1.0",
-    "react-router-dom": "^6.0.2",
-    "stremio-addon-client": "^1.16.1",
-    "stremio-aggregators": "^1.10.0",
-    "stremio-official-addons": "^1.5.2"
+    "web-vitals": "1.0.1",
+    "parse-torrent": "9.1.4",
+    "react-helmet": "6.1.0",
+    "react-router-dom": "6.0.2",
+    "stremio-addon-client": "1.16.1",
+    "stremio-aggregators": "1.10.0",
+    "stremio-official-addons": "1.5.2"
   }
 }
