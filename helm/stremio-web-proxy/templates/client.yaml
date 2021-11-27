@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     {{ if .Values.client.ingressAnnotations }}
-      {{ toYaml .Values.client.ingressAnnotations }}
+    {{ toYaml .Values.client.ingressAnnotations }}
     {{ end }}
 spec:
   {{ if .Values.client.tls }}
