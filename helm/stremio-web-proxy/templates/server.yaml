@@ -21,7 +21,7 @@ spec:
   - host: {{ .Values.server.host }}
     http:
       paths:
-      - path: /stremio-web-proxy/api/(.*)
+      - path: /api/(.*)
         backend:
           servicePort: {{ .Values.server.port }}
           serviceName: {{ .Chart.Name }}-server
