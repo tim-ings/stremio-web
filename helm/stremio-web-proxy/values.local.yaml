@@ -11,3 +11,11 @@ server:
   port: 3000
   replicas: 1
   tls: true
+
+localSecrets:
+- name: stremio-web-proxy.config
+  properties:
+  - name: config
+    value:
+      addonUrls: []
+      trackers: []

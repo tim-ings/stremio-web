@@ -21,3 +21,10 @@ server:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-url: http://oauth2-proxy.ingress.svc.cluster.local/oauth2/auth
     nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
+
+secrets:
+- name: stremio-web-proxy.config
+  ref: /prod/stremio-web-proxy
+  properties:
+  - name: config
+    key: config

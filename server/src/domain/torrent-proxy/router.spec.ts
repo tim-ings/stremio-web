@@ -11,7 +11,7 @@ describe(`torrent proxy router`, () => {
   const queryStream = jest.fn();
   
   const server = express()
-    .use(torrentProxyApiRouter(createStream, queryStream))
+    .use(torrentProxyApiRouter(createStream, queryStream, []))
     .use(errorHandler)
     .listen(9001);
 

@@ -1,4 +1,5 @@
 import { json, Request, Response, Router } from 'express'
+import { accessSync } from 'fs';
 import { ValidationError } from '../../util/errors';
 import { asyncRoute } from '../../util/express'
 import { isValidString } from '../../util/validation';
@@ -8,6 +9,7 @@ import { ProxiedVideoStreamQueryHandler } from './query-handler';
 export const torrentProxyApiRouter = (
   createStream: ProxiedVideoStreamCreateCommandHandler,
   queryStream: ProxiedVideoStreamQueryHandler,
+  addonUrls: string[],
 ) => {
 
   const postStreamRoute = async (request: Request, response: Response) => {
@@ -38,8 +40,17 @@ export const torrentProxyApiRouter = (
       .pipe(response);
   }
 
+  const getAddonUrlsRoute = (request: Request, response: Response) => response.status(200).json({ addonUrls });
+
+  const postKillRoute = (request: Request, response: Response) => {
+    setTimeout(() => process.exit(1), 50);
+    return response.sendStatus(200);
+  }
+
   return Router()
     .use(json())
+    .get(`/addons`, getAddonUrlsRoute)
+    .post(`/kill`, postKillRoute)
     .post(`/stream`, asyncRoute(postStreamRoute))
     .get(`/stream/:streamId`, asyncRoute(getStreamRoute));
 };

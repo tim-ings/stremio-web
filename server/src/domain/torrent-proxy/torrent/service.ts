@@ -18,6 +18,7 @@ export interface TorrentService {
 export const torrentServiceFactory = (
   lifecycle: LifecycleManager,
   logger: Logger,
+  additionalTrackers: string[],
 ): TorrentService => {
 
   const client = new WebTorrent({ maxConns: 100 });
@@ -29,7 +30,7 @@ export const torrentServiceFactory = (
     .find(() => true);
 
   return magnet => new Promise((resolve, reject) => {
-    client.add(magnet, { strategy: `sequential`, path: `/tmp/torrents/`, destroyStoreOnDestroy: true }, torrent => {
+    client.add(magnet, { strategy: `sequential`, path: `/tmp/torrents/`, destroyStoreOnDestroy: true, announce: additionalTrackers }, torrent => {
       const file = largestMp4File(torrent.files);
       if (!file) return reject('No mp4 files found in torrent');
 

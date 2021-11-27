@@ -62,3 +62,8 @@ spec:
           env:
             - name: PORT
               value: "{{ .Values.server.port }}"
+            - name: STREMIO_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: stremio-web-proxy.config
+                  key: config

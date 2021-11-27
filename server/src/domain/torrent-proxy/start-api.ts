@@ -12,8 +12,14 @@ import { torrentServiceFactory } from './torrent/service';
 import { inMemoryTorrentStateRepository } from './torrent/repository';
 import { proxiedVideoStreamQueryHandler } from './query-handler';
 
+interface StremioConfig {
+  addonUrls?: string[]
+  trackers?: string[]
+}
+
 const env = {
   port: process.env.PORT as string,
+  stremioConfig: JSON.parse(process.env.STREMIO_CONFIG ?? `{}`) as StremioConfig,
 };
 
 export const startTorrentProxyApi = (
@@ -21,7 +27,7 @@ export const startTorrentProxyApi = (
   lifecycle: LifecycleManager,
 ) => {
 
-  const torrentService = torrentServiceFactory(lifecycle, logger);
+  const torrentService = torrentServiceFactory(lifecycle, logger, env?.stremioConfig?.trackers ?? []);
   const repository = inMemoryTorrentStateRepository();
   const createStream = proxiedVideoStreamCreateCommandHandler(torrentService, repository, () => uuid());
   const queryStream = proxiedVideoStreamQueryHandler(repository);
@@ -29,7 +35,7 @@ export const startTorrentProxyApi = (
   const api = express()
     .use(requestLogger(logger))
     .use(healthRouter())
-    .use(`/`, torrentProxyApiRouter(createStream, queryStream))
+    .use(`/`, torrentProxyApiRouter(createStream, queryStream, env?.stremioConfig?.addonUrls ?? []))
     .use(notFoundHandler)
     .use(errorLogger(logger))
     .use(errorHandler)
