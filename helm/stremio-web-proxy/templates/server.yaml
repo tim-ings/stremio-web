@@ -21,7 +21,8 @@ spec:
   - host: {{ .Values.server.host }}
     http:
       paths:
-      - path: /api/(.*)
+      - pathType: Prefix
+        path: /api/(.*)
         backend:
           service:
             name: {{ .Chart.Name }}-server
