@@ -7,8 +7,6 @@ metadata:
     nginx.com/health-checks: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
-    external-dns.alpha.kubernetes.io/hostname: "{{ $.Values.client.host }}"
-    external-dns.alpha.kubernetes.io/target: "infra.tim-ings.com"
 {{- if .Values.client.ingressAnnotations }}
 {{ .Values.client.ingressAnnotations | toYaml | indent 4 }}
 {{- end }}

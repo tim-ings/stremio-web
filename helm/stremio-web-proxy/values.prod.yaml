@@ -6,6 +6,7 @@ client:
   tls: true
   ingressAnnotations:
     external-dns.alpha.kubernetes.io/hostname: stremio-web-proxy.tim-ings.com
+    external-dns.alpha.kubernetes.io/target: infra.tim-ings.com
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-url: http://stremio-web-proxy-oauth2-proxy.stremio-web-proxy.svc.cluster.local/oauth2/auth
     nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
@@ -18,6 +19,7 @@ server:
   tls: true
   ingressAnnotations:
     external-dns.alpha.kubernetes.io/hostname: stremio-web-proxy.tim-ings.com
+    external-dns.alpha.kubernetes.io/target: infra.tim-ings.com
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-url: http://stremio-web-proxy-oauth2-proxy.stremio-web-proxy.svc.cluster.local/oauth2/auth
     nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
