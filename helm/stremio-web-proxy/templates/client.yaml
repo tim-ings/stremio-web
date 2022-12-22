@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Chart.Name }}-client-ingress
@@ -21,10 +21,13 @@ spec:
   - host: {{ .Values.client.host }}
     http:
       paths:
-      - path: /(.*)
+      - pathType: Prefix
+        path: /(.*)
         backend:
-          servicePort: {{ .Values.client.port }}
-          serviceName: {{ .Chart.Name }}-client
+          service:
+            name: {{ .Chart.Name }}-client
+            port:
+              number: {{ .Values.client.port }}
 ---
 apiVersion: v1
 kind: Service
